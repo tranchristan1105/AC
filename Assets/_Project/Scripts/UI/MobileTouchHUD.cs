@@ -2,6 +2,7 @@ using UnityEngine;
 using AnimalCrossing.Core;
 using AnimalCrossing.Player;
 using AnimalCrossing.Economy;
+using AnimalCrossing.Interior;
 
 namespace AnimalCrossing.UI
 {
@@ -15,30 +16,68 @@ namespace AnimalCrossing.UI
         public CurvedWorldManager curvedWorld;
         public RealTimeClockManager clock;
         public PocketInventoryManager inventory;
+        public InteriorDecoratorController decorator;
 
         private bool _showEngineInspector;
 
         private void OnGUI()
         {
-            GUI.skin.button.fontSize = 14;
-            GUI.skin.label.fontSize = 14;
+            GUI.skin.button.fontSize = 13;
+            GUI.skin.label.fontSize = 13;
 
-            // Top-Left Clock & Engine Lab Toggle
-            GUILayout.BeginArea(new Rect(16, 16, 420, 320));
+            // Top-Left Clock, Balances, Decorator Toggle & Engine Lab
+            GUILayout.BeginArea(new Rect(16, 16, 560, 360));
             GUILayout.BeginHorizontal("box");
             string timeStr = clock != null ? clock.CurrentIslandTime.ToString("hh:mm tt (ddd)") : "10:30 AM";
-            GUILayout.Label($"🏝️ {timeStr}", GUILayout.Width(165));
+            GUILayout.Label($"🏝️ {timeStr}", GUILayout.Width(145));
 
             int bells = inventory != null ? inventory.bells : 2500;
             int miles = inventory != null ? inventory.nookMiles : 600;
-            GUILayout.Label($"💰 {bells:N0} Bells   ✈️ {miles:N0} Miles");
+            GUILayout.Label($"💰 {bells:N0}   ✈️ {miles:N0}", GUILayout.Width(145));
 
-            if (GUILayout.Button(_showEngineInspector ? "Close Lab" : "⚙️ Shader & RTC", GUILayout.Width(120)))
+            if (decorator != null)
+            {
+                Color prevBg = GUI.backgroundColor;
+                if (decorator.IsDecorating) GUI.backgroundColor = new Color(0.95f, 0.62f, 0.15f);
+                if (GUILayout.Button(decorator.IsDecorating ? "🏠 Exit Decor" : "🏠 Decorate", GUILayout.Width(110)))
+                {
+                    decorator.ToggleDecoratorMode();
+                }
+                GUI.backgroundColor = prevBg;
+            }
+
+            if (GUILayout.Button(_showEngineInspector ? "Close Lab" : "⚙️ Shader/RTC", GUILayout.Width(115)))
             {
                 _showEngineInspector = !_showEngineInspector;
             }
             GUILayout.EndHorizontal();
 
+            // Decorator Sub-Tile Controls
+            if (decorator != null && decorator.IsDecorating)
+            {
+                GUILayout.BeginVertical("box");
+                GUILayout.Label("🪑 0.5m Sub-Tile Decorator (Click & drag furniture on grid, or spawn below):");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("+ Place Log Bench"))
+                {
+                    Vector3 spawnPos = player != null ? player.transform.position + player.transform.forward * 1.5f : decorator.roomOrigin;
+                    decorator.SpawnFurnitureOnGrid("log_bench", "Log Bench", new Color(0.68f, 0.45f, 0.25f), spawnPos);
+                }
+                if (GUILayout.Button("+ Place Lantern"))
+                {
+                    Vector3 spawnPos = player != null ? player.transform.position + player.transform.forward * 1.5f : decorator.roomOrigin;
+                    decorator.SpawnFurnitureOnGrid("garden_lantern", "Garden Lantern", new Color(0.98f, 0.88f, 0.35f), spawnPos);
+                }
+                if (decorator.SelectedItem != null)
+                {
+                    if (GUILayout.Button("↻ Rotate 90° (R)")) decorator.RotateSelected90Degrees();
+                    if (GUILayout.Button("📦 Pocket")) decorator.StoreSelectedIntoPocket();
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
+
+            // Shader & Real-Time Clock Inspector
             if (_showEngineInspector && curvedWorld != null && clock != null)
             {
                 GUILayout.BeginVertical("box");

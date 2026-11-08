@@ -10,14 +10,15 @@ using AnimalCrossing.Player;
 using AnimalCrossing.AI;
 using AnimalCrossing.Audio;
 using AnimalCrossing.Economy;
+using AnimalCrossing.Interior;
 using AnimalCrossing.UI;
 
 namespace AnimalCrossing.Editor
 {
     /// <summary>
     /// One-Click Unity Editor Scene & Asset Bootstrapper.
-    /// Generates all Curved-World URP Materials, ScriptableObject profiles, 3D Multi-Elevation Island,
-    /// Player, Camera, Trees, Rocks, Nook's Cranny, and Wandering Villagers in a ready-to-play scene.
+    /// Generates all Curved-World URP Materials, ScriptableObject profiles, 3D Multi-Elevation Island
+    /// with Procedural Marching-Squares Cliff Bevels, Player, Camera, Trees, Rocks, and Wandering Villagers.
     /// </summary>
     public static class IslandSceneBootstrapper
     {
@@ -61,6 +62,7 @@ namespace AnimalCrossing.Editor
             systemsRoot.AddComponent<IslandSaveSystem>();
             PocketInventoryManager invMgr = systemsRoot.AddComponent<PocketInventoryManager>();
             systemsRoot.AddComponent<StalkMarketController>();
+            InteriorDecoratorController decorMgr = systemsRoot.AddComponent<InteriorDecoratorController>();
             IslandGridManager gridMgr = systemsRoot.AddComponent<IslandGridManager>();
 
             gridMgr.grassMaterial = matGrassLight;
@@ -77,7 +79,7 @@ namespace AnimalCrossing.Editor
             sunObj.transform.rotation = Quaternion.Euler(48f, -30f, 0f);
             clockMgr.directionalSunLight = sunLight;
 
-            // 5. Build 3D Island Terrain Hierarchy (48x48 Tiles = 3x3 Acres)
+            // 5. Build 3D Island Terrain Hierarchy (48x48 Tiles = 3x3 Acres) with Procedural Cliff Bevels
             gridMgr.InitializeGridData();
             GameObject terrainRoot = new GameObject("IslandTerrain");
 
@@ -100,6 +102,32 @@ namespace AnimalCrossing.Editor
                         continue;
                     }
 
+                    Material topMat = checker ? matGrassLight : matGrassDark;
+                    if (t.surface == TerrainSurfaceType.Sand) topMat = matSand;
+                    else if (t.surface == TerrainSurfaceType.StonePlaza) topMat = matPlaza;
+                    else if (t.surface == TerrainSurfaceType.WoodBridge) topMat = matWood;
+
+                    if (t.elevation >= 1 && t.surface == TerrainSurfaceType.Grass)
+                    {
+                        // Use Procedural Marching-Squares Beveled Cliff Mesh with Soil + Overhang Grass Cap
+                        GameObject cliffTile = new GameObject($"CliffTile_{x}_{z}");
+                        cliffTile.transform.SetParent(terrainRoot.transform);
+                        float h = t.elevation * 1.1f;
+                        cliffTile.transform.position = new Vector3(x + 0.5f, 0f, z + 0.5f);
+
+                        Mesh bevelMesh = ProceduralCliffMeshBuilder.GetOrBuildCliffTileMesh(t.cliffEdgeBitmask, h);
+                        MeshFilter mf = cliffTile.AddComponent<MeshFilter>();
+                        mf.sharedMesh = bevelMesh;
+
+                        MeshRenderer mr = cliffTile.AddComponent<MeshRenderer>();
+                        mr.sharedMaterials = new[] { matCliffSoil, topMat };
+
+                        BoxCollider bc = cliffTile.AddComponent<BoxCollider>();
+                        bc.center = new Vector3(0f, h * 0.5f, 0f);
+                        bc.size = new Vector3(1f, h, 1f);
+                        continue;
+                    }
+
                     GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     block.name = $"Tile_{x}_{z}";
                     block.transform.SetParent(terrainRoot.transform);
@@ -107,13 +135,7 @@ namespace AnimalCrossing.Editor
                     float height = Mathf.Max(0.4f, t.elevation * 1.1f);
                     block.transform.localScale = new Vector3(1f, height, 1f);
                     block.transform.position = new Vector3(x + 0.5f, height * 0.5f - (t.surface == TerrainSurfaceType.Sand ? 0.25f : 0f), z + 0.5f);
-
-                    Material surfaceMat = checker ? matGrassLight : matGrassDark;
-                    if (t.surface == TerrainSurfaceType.Sand) surfaceMat = matSand;
-                    else if (t.surface == TerrainSurfaceType.StonePlaza) surfaceMat = matPlaza;
-                    else if (t.surface == TerrainSurfaceType.WoodBridge) surfaceMat = matWood;
-
-                    block.GetComponent<Renderer>().sharedMaterial = surfaceMat;
+                    block.GetComponent<Renderer>().sharedMaterial = topMat;
                 }
             }
 
@@ -150,6 +172,7 @@ namespace AnimalCrossing.Editor
             GameObject playerObj = CreatePlayerCharacter(gridMgr.TileToWorldCenter(20, 22), matWood, matApple);
             ACPlayerController playerCtrl = playerObj.GetComponent<ACPlayerController>();
             curvedMgr.focusTarget = playerObj.transform;
+            decorMgr.roomOrigin = gridMgr.TileToWorldCenter(20, 22);
 
             GameObject camObj = new GameObject("Main Camera");
             camObj.tag = "MainCamera";
@@ -184,6 +207,7 @@ namespace AnimalCrossing.Editor
             hud.curvedWorld = curvedMgr;
             hud.clock = clockMgr;
             hud.inventory = invMgr;
+            hud.decorator = decorMgr;
 
             EditorSceneManager.SaveScene(scene, "Assets/_Project/Scenes/MainIsland.unity");
             AssetDatabase.SaveAssets();

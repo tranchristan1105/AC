@@ -1,42 +1,54 @@
-# Nook Isle Mobile — Reverse-Engineered Animal Crossing 3D Sandbox
+# Animal Crossing Mobile — Unity 3D (URP) Architecture & Reverse-Engineered Core
 
-A playable mobile-first 3D implementation of **Animal Crossing** built with **TypeScript**, **Three.js (Custom GLSL Rolling-Log Vertex Shader)**, **WebAudio Procedural Animalese**, **Vite**, and **Capacitor**.
+This repository is a **Unity (Universal Render Pipeline / URP)** project (`Unity 2022.3 LTS` / `Unity 6`) implementing the reverse-engineered core systems of **Animal Crossing** (*New Horizons* and *Pocket Camp*) for **iOS and Android**.
 
-## Reverse-Engineered Core Systems Implemented
+---
 
-1. **GLSL "Rolling Log" Horizon Vertex Shader (`src/engine/RollingWorldShader.ts`)**:
-   - All world coordinates, physics, and tile interactions live on a flat Cartesian grid $(x, y, z)$.
-   - Vertex positions bend downward quadratically as a function of Z-depth from the player camera:
-     $$y_{\text{curved}} = y_{\text{world}} - k \cdot \max(0, |z - z_{\text{cam}}| - z_{\text{flat}})^2$$
-   - Live curvature $k$ can be inspected and adjusted in real time inside **NookPhone → Engine & RTC Lab**.
+## Quick Start in Unity Hub (One-Click Scene Setup)
 
-2. **Acre & Multi-Elevation Spatial Grid (`src/engine/WorldGrid.ts`)**:
-   - $48 \times 48$ tile island ($3 \times 3$ acres) with 3 elevation tiers: Perimeter Ocean & Sandy Beach (Elevation 0), Main Meadow, Town Plaza & River Bridge (Elevation 1), and Northern Cedar Clifftop with Waterfall & Incline Ramp (Elevation 2).
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/tranchristan1105/AC.git
+   ```
+2. Open **Unity Hub** $\to$ **Add** $\to$ **Add project from disk** and select the cloned `AC` folder.
+3. Once Unity finishes importing packages, click the top menu bar:
+   > **`Tools` $\to$ `Animal Crossing` $\to$ `Bootstrap Playable 3D Island Scene`**
+4. Unity will automatically generate all **Curved-World URP Materials**, **ScriptableObject Villager Profiles**, the **3D Multi-Elevation Island Grid**, **Player**, **Villagers**, and **Mobile HUD**, and open `Assets/_Project/Scenes/MainIsland.unity`.
+5. Press **Play**!
 
-3. **Real-Time Clock & 05:00 AM Offline Delta Simulator (`src/engine/RealTimeClock.ts`, `src/simulation/DeltaSimulator.ts`)**:
-   - Synchronizes with the device clock for 24-hour sky/sun lighting interpolation and hourly ambient music.
-   - Simulates 05:00 AM daily rollovers to regrow harvested fruit trees, reset rock hit counters, bury new daily fossils & glowing bell spots, and step the Stalk Market turnip prices.
+---
 
-4. **Ephemeral Critter Ecology & Bobber Bite State Machine (`src/simulation/CritterSpawner.ts`)**:
-   - Spawns active fish shadows (`XS` to `XL` + `Finned`) in the river and sea and flying/flower insects (`Common Butterfly`, `Emperor Butterfly`, `Queen Alexandra's Birdwing`, `Orchid Mantis`, `Firefly`) filtered by hour and weather.
+## Project Architecture (`Assets/_Project/`)
 
-5. **Villager Utility AI & Procedural Animalese Synthesizer (`src/simulation/VillagerAI.ts`, `src/engine/AudioSynthesizer.ts`)**:
-   - Autonomous island neighbors (**Maple**, **Marshal**, **Roald**) wander, wave when approached, offer favors, accept gifts, and speak with real-time formant-filtered WebAudio Animalese.
-
-6. **DIY Crafting, Island Decorator, Stalk Market & Custom Pixel Studio (`src/simulation/CraftingSystem.ts`, `src/simulation/EconomySystem.ts`, `src/ui/UIManager.ts`)**:
-   - 16-slot Pocket Inventory, DIY Workbench crafting, outdoor furniture placement, 4-pattern Markov Stalk Market turnip tracker, Nook Miles+ mobile micro-goals, and a 16×16 Custom Pixel Path Editor.
-
-## Running & Packaging for Mobile
-
-```bash
-# Start development server
-npm run dev
-
-# Build production bundle
-npm run build
-
-# Package for iOS / Android with Capacitor
-npx cap add ios
-npx cap add android
-npx cap sync
+```text
+Assets/_Project/
+├── Shaders/
+│   ├── CurvedWorldCommon.hlsl       # Rolling-Log vertex displacement + analytical normal Jacobian rotation
+│   ├── CurvedWorldLitURP.shader     # Multi-pass URP Toon/Matte Lit + curved ShadowCaster + DepthOnly
+│   └── CurvedWaterURP.shader        # Stylized river/ocean water with shoreline foam & curved horizon
+├── Scripts/
+│   ├── Core/
+│   │   ├── CurvedWorldManager.cs    # [ExecuteAlways] global shader controller + inverse-curve touch raycast
+│   │   ├── RealTimeClockManager.cs  # System.DateTime sync, 05:00 AM rollover, 24h sun/sky lighting
+│   │   └── IslandSaveSystem.cs      # Mobile persistentDataPath JSON save + offline delta catch-up
+│   ├── World/
+│   │   ├── IslandGridManager.cs     # 16x16 Acre & 1x1m Tile grid, cliff Marching Squares bitmask & Terraforming
+│   │   └── InteractableWorldProp.cs # Fruit tree harmonic shake/chop, 8-hit combo rocks, fossils, workbench
+│   ├── Player/
+│   │   ├── ACPlayerController.cs    # CharacterController movement, virtual thumbstick, tap-to-walk, 8 tools
+│   │   └── FishingController.cs     # Parabolic LineRenderer, 1-4 nibble fake-outs, mobile haptics, bite window
+│   ├── AI/
+│   │   ├── VillagerProfileSO.cs     # ScriptableObject for personality, schedule, Animalese pitch & dialogue
+│   │   └── VillagerUtilityAgent.cs  # NavMeshAgent + Utility AI decision loop, waving & friendship tiers
+│   ├── Audio/
+│   │   └── AnimaleseSynthesizer.cs  # Unity OnAudioFilterRead real-time DSP formant voice synthesizer
+│   ├── Economy/
+│   │   ├── ItemDataSO.cs            # ScriptableObject for items, fish, bugs, fossils & placeable furniture
+│   │   ├── DIYRecipeSO.cs           # ScriptableObject for DIY Workbench recipes
+│   │   ├── StalkMarketController.cs # Exact ACNH 4-pattern Markov Turnip price predictor
+│   │   └── PocketInventoryManager.cs# Pocket slots, Bells, Nook Miles & DIY crafting execution
+│   ├── UI/
+│   │   └── MobileTouchHUD.cs        # On-screen mobile tool dock, [A] action button & live Shader/RTC lab
+│   └── Editor/
+│       └── IslandSceneBootstrapper.cs # One-click Unity Editor scene, material & asset generator
 ```

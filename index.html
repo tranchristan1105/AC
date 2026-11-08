@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Nook Isle Mobile — Animal Crossing 3D Rolling-Horizon Sandbox</title>
+    <meta
+      name="description"
+      content="A reverse-engineered Animal Crossing mobile 3D sandbox featuring the custom GLSL Rolling-Log curved horizon shader, Real-Time Clock synchronization, procedural Animalese audio synthesis, fishing, bug catching, DIY crafting, and Stalk Market turnip trading."
+    />
+  </head>
+  <body>
+    <h1 class="sr-only">Nook Isle Mobile — Animal Crossing 3D Island Sandbox</h1>
+    <main id="app">
+      <canvas id="game-canvas" aria-label="3D Animal Crossing Island World"></canvas>
+
+      <!-- Top HUD Header -->
+      <header class="hud-top">
+        <div class="hud-cluster">
+          <div class="clock-widget" id="hud-clock-widget">
+            <span class="clock-time" id="hud-clock-time">10:30 AM</span>
+            <span class="clock-date" id="hud-clock-date">☀️ Nov 8 (Sun)</span>
+          </div>
+          <button class="ac-pill interactive nookphone-btn" id="btn-open-nookphone" type="button">
+            📱 NookPhone
+          </button>
+        </div>
+
+        <div class="hud-cluster">
+          <div class="ac-pill bells-badge" id="hud-bells-pill">
+            💰 <span id="hud-bells-val">2,500</span> Bells
+          </div>
+          <div class="ac-pill miles-badge" id="hud-miles-pill">
+            ✈️ <span id="hud-miles-val">600</span> Miles
+          </div>
+          <button class="ac-pill interactive" id="btn-open-pocket" type="button">
+            🎒 Pocket
+          </button>
+          <button class="ac-pill interactive" id="btn-toggle-audio" type="button">
+            🔊 Audio
+          </button>
+        </div>
+      </header>
+
+      <!-- Floating Context Action Prompt in 3D Screen Space -->
+      <div class="world-prompt" id="world-context-prompt" style="opacity: 0;">
+        <span class="key-badge">A</span><span id="world-context-text">Interact</span>
+      </div>
+
+      <!-- Toast Notification Banner -->
+      <div class="toast-banner" id="toast-banner" role="status" aria-live="polite"></div>
+
+      <!-- Tool Dock (Bottom Bar) -->
+      <nav class="tool-dock" aria-label="Island Tools">
+        <button class="tool-btn active" id="tool-btn-hand" data-tool="hand" type="button" title="Bare Hands (Shake / Pick Up)">
+          <span>🖐️</span>
+          <span class="tool-label">Hand</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-axe" data-tool="axe" type="button" title="Axe (Chop Wood)">
+          <span>🪓</span>
+          <span class="tool-label">Axe</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-shovel" data-tool="shovel" type="button" title="Shovel (Dig Fossils & Hit Rocks)">
+          <span>⛏️</span>
+          <span class="tool-label">Shovel</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-rod" data-tool="rod" type="button" title="Fishing Rod (Cast & Reel)">
+          <span>🎣</span>
+          <span class="tool-label">Rod</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-net" data-tool="net" type="button" title="Bug Net (Catch Insects)">
+          <span>🦋</span>
+          <span class="tool-label">Net</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-watering_can" data-tool="watering_can" type="button" title="Watering Can (Water Flowers)">
+          <span>🚿</span>
+          <span class="tool-label">Water</span>
+        </button>
+        <button class="tool-btn" id="tool-btn-brush" data-tool="brush" type="button" title="Custom Design Path Brush">
+          <span>🎨</span>
+          <span class="tool-label">Path</span>
+        </button>
+      </nav>
+
+      <!-- Mobile Touch Thumbstick (Bottom Left) -->
+      <div class="touch-joystick-zone" id="joystick-zone" aria-label="Movement Thumbstick">
+        <div class="touch-joystick-stick" id="joystick-stick">✥</div>
+      </div>
+
+      <!-- Context-Sensitive Primary Action Button (Bottom Right) -->
+      <div class="action-Cluster-right">
+        <button class="primary-action-btn" id="btn-primary-action" type="button">
+          <span class="btn-icon" id="action-btn-icon">🖐️</span>
+          <span class="btn-caption" id="action-btn-label">Interact</span>
+        </button>
+      </div>
+
+      <!-- Animal Crossing Speech Bubble Overlay -->
+      <section class="dialogue-overlay" id="dialogue-overlay" aria-label="Villager Dialogue">
+        <div class="speaker-badge" id="dialogue-speaker-badge">Maple</div>
+        <p class="dialogue-text" id="dialogue-text"></p>
+        <div class="dialogue-actions" id="dialogue-actions"></div>
+      </section>
+
+      <!-- Multi-App NookPhone / Pocket / DIY / Shop Modal -->
+      <div class="modal-backdrop" id="modal-backdrop">
+        <section class="ac-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">🎒 Pocket Inventory</h2>
+            <button class="close-modal-btn" id="btn-close-modal" type="button" aria-label="Close">✕</button>
+          </div>
+          <div class="modal-tabs" id="modal-tabs"></div>
+          <div class="modal-body" id="modal-body"></div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

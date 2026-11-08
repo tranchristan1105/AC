@@ -1,0 +1,212 @@
+{
+  "items": [
+    {
+      "id": "apple",
+      "name": "Apple",
+      "category": "fruit",
+      "sellPrice": 500,
+      "buyPrice": 600,
+      "icon": "🍎",
+      "description": "A crisp, sweet island apple. Shake fruit trees to harvest!"
+    },
+    {
+      "id": "orange",
+      "name": "Orange",
+      "category": "fruit",
+      "sellPrice": 500,
+      "buyPrice": 600,
+      "icon": "🍊",
+      "description": "Sun-ripened citrus bursting with tangy juice."
+    },
+    {
+      "id": "coconut",
+      "name": "Coconut",
+      "category": "fruit",
+      "sellPrice": 250,
+      "buyPrice": 400,
+      "icon": "🥥",
+      "description": "Harvested from shoreline palm trees."
+    },
+    {
+      "id": "softwood",
+      "name": "Softwood",
+      "category": "material",
+      "sellPrice": 60,
+      "buyPrice": 150,
+      "icon": "🪵",
+      "description": "Pliable light timber chopped from island trees."
+    },
+    {
+      "id": "hardwood",
+      "name": "Hardwood",
+      "category": "material",
+      "sellPrice": 60,
+      "buyPrice": 150,
+      "icon": "🪵",
+      "description": "Dense, sturdy timber chopped from island trees."
+    },
+    {
+      "id": "stone",
+      "name": "Stone",
+      "category": "material",
+      "sellPrice": 75,
+      "buyPrice": 200,
+      "icon": "🪨",
+      "description": "Mined by striking island rocks with a Shovel or Axe."
+    },
+    {
+      "id": "iron_nugget",
+      "name": "Iron Nugget",
+      "category": "material",
+      "sellPrice": 375,
+      "buyPrice": 800,
+      "icon": "🔩",
+      "description": "High-grade metallic ore struck from island rocks."
+    },
+    {
+      "id": "weeds",
+      "name": "Clump of Weeds",
+      "category": "material",
+      "sellPrice": 20,
+      "buyPrice": 50,
+      "icon": "🌿",
+      "description": "Wild island greenery useful for rustic DIY crafting."
+    },
+    {
+      "id": "amber_fossil",
+      "name": "Amber Fossil",
+      "category": "fossil",
+      "sellPrice": 1200,
+      "buyPrice": 0,
+      "icon": "琥",
+      "description": "Ancient golden tree resin unearthed from a star-shaped crack."
+    },
+    {
+      "id": "trex_skull",
+      "name": "T. Rex Skull",
+      "category": "fossil",
+      "sellPrice": 6000,
+      "buyPrice": 0,
+      "icon": "🦖",
+      "description": "A museum-grade prehistoric predator skull!"
+    },
+    {
+      "id": "trilobite",
+      "name": "Trilobite",
+      "category": "fossil",
+      "sellPrice": 1300,
+      "buyPrice": 0,
+      "icon": "🐚",
+      "description": "A Paleozoic marine arthropod preserved in stone."
+    },
+    {
+      "id": "turnips",
+      "name": "10 Turnips",
+      "category": "turnip",
+      "sellPrice": 100,
+      "buyPrice": 100,
+      "icon": "🌱",
+      "description": "Stalk Market bundle. Watch AM/PM price spikes at Nook's Cranny!"
+    },
+    {
+      "id": "campfire",
+      "name": "Campfire",
+      "category": "furniture",
+      "sellPrice": 450,
+      "buyPrice": 900,
+      "icon": "🔥",
+      "placeable": true,
+      "description": "A crackling outdoor fire pit that casts warm golden light at night."
+    },
+    {
+      "id": "log_bench",
+      "name": "Log Bench",
+      "category": "furniture",
+      "sellPrice": 600,
+      "buyPrice": 1200,
+      "icon": "🪑",
+      "placeable": true,
+      "description": "A cozy split-cedar bench for villagers to sit and relax on."
+    },
+    {
+      "id": "garden_lantern",
+      "name": "Garden Lantern",
+      "category": "furniture",
+      "sellPrice": 800,
+      "buyPrice": 1400,
+      "icon": "🏮",
+      "placeable": true,
+      "description": "A stone-and-glass pathway lantern that glows automatically after dusk."
+    },
+    {
+      "id": "picnic_set",
+      "name": "Outdoor Picnic Set",
+      "category": "furniture",
+      "sellPrice": 1500,
+      "buyPrice": 2600,
+      "icon": "🧺",
+      "placeable": true,
+      "description": "A checkered blanket with tea thermos and cherry tart."
+    },
+    {
+      "id": "zen_fountain",
+      "name": "Stone Fountain",
+      "category": "furniture",
+      "sellPrice": 3200,
+      "buyPrice": 5800,
+      "icon": "⛲",
+      "placeable": true,
+      "description": "An artisan carved fountain with soothing cascading water."
+    }
+  ],
+  "recipes": [
+    {
+      "id": "recipe_campfire",
+      "resultItemId": "campfire",
+      "name": "Campfire",
+      "icon": "🔥",
+      "ingredients": [
+        { "itemId": "softwood", "count": 3 }
+      ]
+    },
+    {
+      "id": "recipe_log_bench",
+      "resultItemId": "log_bench",
+      "name": "Log Bench",
+      "icon": "🪑",
+      "ingredients": [
+        { "itemId": "hardwood", "count": 3 }
+      ]
+    },
+    {
+      "id": "recipe_garden_lantern",
+      "resultItemId": "garden_lantern",
+      "name": "Garden Lantern",
+      "icon": "🏮",
+      "ingredients": [
+        { "itemId": "stone", "count": 2 },
+        { "itemId": "iron_nugget", "count": 1 }
+      ]
+    },
+    {
+      "id": "recipe_picnic_set",
+      "resultItemId": "picnic_set",
+      "name": "Outdoor Picnic Set",
+      "icon": "🧺",
+      "ingredients": [
+        { "itemId": "softwood", "count": 2 },
+        { "itemId": "apple", "count": 2 }
+      ]
+    },
+    {
+      "id": "recipe_zen_fountain",
+      "resultItemId": "zen_fountain",
+      "name": "Stone Fountain",
+      "icon": "⛲",
+      "ingredients": [
+        { "itemId": "stone", "count": 4 },
+        { "itemId": "iron_nugget", "count": 2 }
+      ]
+    }
+  ]
+}

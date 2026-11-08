@@ -1,0 +1,83 @@
+[
+  {
+    "id": "maple",
+    "name": "Maple",
+    "species": "Cub",
+    "personality": "Normal",
+    "catchphrase": "honey",
+    "basePitch": 395,
+    "hobby": "nature",
+    "favoriteGift": "apple",
+    "houseTile": [11, 14],
+    "bodyColor": "#c97a4b",
+    "earColor": "#7d4524",
+    "shirtColor": "#e85d75",
+    "badgeBg": "#f48fb1",
+    "badgeText": "#4a1525",
+    "greetings": {
+      "morning": "Good morning! The island breeze smells like fresh clover today, {catchphrase}!",
+      "afternoon": "Oh, hello there! I was just admiring how the sunlight dances on the river, {catchphrase}!",
+      "evening": "Good evening! The stars are starting to peek over the horizon, {catchphrase}!"
+    },
+    "chatter": [
+      "Did you notice how the world gently curves away as you walk north? It makes every stroll feel like turning the page of a storybook, {catchphrase}!",
+      "I spent the morning watering the wildflowers near the river cliff. If you plant fruit or flowers and water them, the island feels twice as cozy!",
+      "Sometimes I sit under an apple tree with a warm cup of tea and listen to the wind chimes, {catchphrase}?"
+    ],
+    "questPrompt": "Oh! I was hoping to bake an apple tart today, {catchphrase}! Do you happen to have an Apple or any fresh fruit in your pocket?"
+  },
+  {
+    "id": "marshal",
+    "name": "Marshal",
+    "species": "Squirrel",
+    "personality": "Smug",
+    "catchphrase": "sulky",
+    "basePitch": 430,
+    "hobby": "music",
+    "favoriteGift": "coffee",
+    "houseTile": [35, 14],
+    "bodyColor": "#f7f4ed",
+    "earColor": "#e39ab2",
+    "shirtColor": "#3b5998",
+    "badgeBg": "#90caf9",
+    "badgeText": "#0d2b45",
+    "greetings": {
+      "morning": "Ah, bonjour! Nothing pairs with an island sunrise quite like a hand-poured espresso, {catchphrase}.",
+      "afternoon": "Look who graces my acre! Were you drawn here by my impeccable acoustic vibes, {catchphrase}?",
+      "evening": "Evening, islander! The moonlight really brings out my photogenic side, don't you think, {catchphrase}?"
+    },
+    "chatter": [
+      "I've been tracking the Stalk Market at Nook's Cranny. Buy turnips low, watch the 4-pattern curve, and sell at the spike—pure artistry, {catchphrase}!",
+      "Have you tried the DIY Workbench near the Plaza? Crafting a Log Bench or Garden Lantern really elevates our island's curb appeal.",
+      "Every hour the island melody shifts to match the sky. That's what I call bespoke sound design, {catchphrase}?"
+    ],
+    "questPrompt": "Listen, {catchphrase}—my interior aesthetic needs a natural specimen! Could you bring me any Bug or Fish you've caught?"
+  },
+  {
+    "id": "roald",
+    "name": "Roald",
+    "species": "Penguin",
+    "personality": "Jock",
+    "catchphrase": "b-b-buddy",
+    "basePitch": 285,
+    "hobby": "fitness",
+    "favoriteGift": "orange",
+    "houseTile": [13, 31],
+    "bodyColor": "#2c4059",
+    "earColor": "#f5c542",
+    "shirtColor": "#d9383a",
+    "badgeBg": "#ffcc80",
+    "badgeText": "#422200",
+    "greetings": {
+      "morning": "RISE AND GRIND, {catchphrase}! I already did fifty shoreline lunges before 6 AM!",
+      "afternoon": "Heyhey! My biceps are practically vibrating from all this island air, {catchphrase}!",
+      "evening": "Nighttime is just daytime with extra resistance training, {catchphrase}!"
+    },
+    "chatter": [
+      "Hitting rocks with a Shovel is the ultimate core workout! If you strike quickly, you'll pop out Iron Nuggets, Stone, and even bonus Bells, {catchphrase}!",
+      "Did you see that huge shadow in the ocean? You need a steady thumb on the Fishing Rod to reel in a Coelacanth or Shark, {catchphrase}!",
+      "Chopping wood with an Axe builds deltoids OF STEEL! Plus we can craft campfires for post-workout protein roasts!"
+    ],
+    "questPrompt": "I need post-cardio electrolytes STAT, {catchphrase}! Got any fruit or iron in your pockets to fuel the pump?"
+  }
+]
